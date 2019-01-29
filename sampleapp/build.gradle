@@ -1,12 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-
+    signingConfigs {
+        config {
+            keyAlias 'key0'
+            keyPassword '123456'
+            storeFile file('/Users/danieloliveira/Workspace/maps-sdk-for-android-examples/testkeystore')
+            storePassword '123456'
+        }
+    }
     buildToolsVersion rootProject.androidBuildToolsVersion
     compileSdkVersion rootProject.androidCompileSdkVersion
-
     defaultConfig {
-
         targetSdkVersion androidTargetSdkVersion
         minSdkVersion androidMinSdkVersion
         versionCode buildVersionCode
@@ -15,18 +20,23 @@ android {
         dimension "locale"
         buildConfigField("String[]", "BUILT_IN_LOCALE", '{"en-US","es-ES","fr-FR","de-DE"}');
         applicationId 'com.tomtom.mapssdk.examplesapp'
-
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     lintOptions {
         abortOnError false
     }
-
+    buildTypes {
+        release {
+            minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
+    }
     packagingOptions {
         merge 'META-INF/services/javax.annotation.processing.Processor'
         merge 'META-INF/DEPENDENCIES.txt'
@@ -43,7 +53,6 @@ android {
         merge 'META-INF/licence.txt'
         merge 'META-INF/rxjava.properties'
     }
-
     testOptions {
         animationsDisabled true
         unitTests.returnDefaultValues = true
@@ -55,7 +64,6 @@ android {
             }
         }
     }
-
     configurations.all {
         resolutionStrategy.force "com.android.support:support-annotations:$rootProject.androidVersions.support"
         resolutionStrategy.force "com.android.support:support-v4:$rootProject.androidVersions.support"
@@ -66,38 +74,37 @@ android {
 }
 
 dependencies {
-        //doc_dependencies_sample_app_start
-        //dependency for display map and core code
-        implementation("com.tomtom.online:sdk-maps:$rootProject.internalVersions.sdk")
 
-        //dependency for traffic
-        implementation("com.tomtom.online:sdk-traffic:$rootProject.internalVersions.sdk")
+    //doc_dependencies_sample_app_start
 
-        //dependency for search
-        implementation("com.tomtom.online:sdk-search:$rootProject.internalVersions.sdk")
+    //dependency for display map and core code
+    implementation "com.tomtom.online:sdk-maps:$rootProject.internalVersions.sdk"
 
-        //dependency for route planner
-        implementation("com.tomtom.online:sdk-routing:$rootProject.internalVersions.sdk")
+    //dependency for traffic
+    implementation "com.tomtom.online:sdk-traffic:$rootProject.internalVersions.sdk"
 
-        //dependency for rx extensions
-        implementation("com.tomtom.online:sdk-maps-rx-extensions:$rootProject.internalVersions.sdk")
+    //dependency for search
+    implementation "com.tomtom.online:sdk-search:$rootProject.internalVersions.sdk"
 
-        //dependency for maps ui extensions
-        implementation("com.tomtom.online:sdk-maps-ui-extensions:$rootProject.internalVersions.sdk")
+    //dependency for route planner
+    implementation "com.tomtom.online:sdk-routing:$rootProject.internalVersions.sdk"
 
-        //dependency for static maps extensions
-        implementation("com.tomtom.online:sdk-maps-static-image:$rootProject.internalVersions.sdk")
+    //dependency for rx extensions
+    implementation "com.tomtom.online:sdk-maps-rx-extensions:$rootProject.internalVersions.sdk"
 
-        //dependency for driving extensions
-        implementation("com.tomtom.online:sdk-maps-driving-extensions:$rootProject.internalVersions.sdk")
-        //doc_dependencies_sample_app_stop
+    //dependency for maps ui extensions
+    implementation "com.tomtom.online:sdk-maps-ui-extensions:$rootProject.internalVersions.sdk"
 
+    //dependency for static maps extensions
+    implementation "com.tomtom.online:sdk-maps-static-image:$rootProject.internalVersions.sdk"
+
+    //dependency for driving extensions
+    implementation "com.tomtom.online:sdk-maps-driving-extensions:$rootProject.internalVersions.sdk"
+
+    //doc_dependencies_sample_app_stop
     implementation "com.github.florent37:singledateandtimepicker:$rootProject.libVersions.singledateandtimepicker"
     implementation "com.android.support.constraint:constraint-layout:$rootProject.androidVersions.constraint_layout"
     implementation "android.arch.lifecycle:viewmodel:$rootProject.androidVersions.androidarch"
     implementation "android.arch.lifecycle:extensions:$rootProject.androidVersions.androidarch"
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$rootProject.libVersions.leakcanary"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.libVersions.leakcanary"
-
 }
 

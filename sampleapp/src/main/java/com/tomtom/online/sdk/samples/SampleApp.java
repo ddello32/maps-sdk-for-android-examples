@@ -19,7 +19,6 @@ import android.support.annotation.RequiresApi;
 import android.support.multidex.MultiDexApplication;
 import android.util.Log;
 
-import com.squareup.leakcanary.LeakCanary;
 import com.tomtom.online.sdk.common.util.LogUtils;
 
 import java.io.File;
@@ -38,9 +37,6 @@ public class SampleApp extends MultiDexApplication {
         //end::doc_log[]
         //initStrictMode();
         CrashSupporter.create(this);
-        if (!isRoboElectricUnitTest()) {
-            LeakCanary.install(this);
-        }
         //tag::register_crash_observer[]
         LogUtils.registerCrashObserver(getApplicationContext(), Uri.parse("file://" + LOGCAT_PATH));
         //end::register_crash_observer[]
